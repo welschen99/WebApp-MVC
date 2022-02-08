@@ -1,0 +1,115 @@
+﻿@model WebAppPRODUCTOS.ViewsModels.ProductosViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Productos</h1>
+<br />  
+<p>
+    <a asp-action="Create" class="btn btn-dark text-md-right">Crear Nuevo Producto</a>
+</p>
+@*Creamos el filtro de busqueda*@ @*viewbag para que nos traiga el listado de carreras*@
+<form asp-action="Index" method="get">
+    <nav class="navbar navbar-dark bg-secondary text-white text-sm-left">
+        <form class="form-inline">
+            <a class="navbar-brand">
+                Nombre: <input type="text" asp-for="@Model.nombre" name="busquedaNombre" value="" />
+            </a>
+            <a class="navbar-brand">
+                Categoria:
+                <select class="form-select text-center" name="categoriaId" asp-items="@Model.Categorias">
+                    <option value="">Todas</option>
+                </select>
+            </a>
+            <a class="navbar-brand">
+                Marca:
+                <select class="form-select text-center" name="marcaId" asp-items="@Model.Marcas">
+                    <option value="">Todas</option>
+                </select>
+            </a>
+            <button type="submit" class="btn btn-primary text-md-right" value="Filtrar">Filtrar</button>
+            <a asp-action="Index" class="btn btn-secondary text-md-right">Volver a la lista completa</a>
+
+        </form>
+    </nav>
+    <br />
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos[0].nombres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos[0].precio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos[0].descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos[0].imagen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos[0].favorito)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos[0].categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos[0].marca)
+            </th>
+            <th>
+                Proveedores
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Productos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombres)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.precio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.descripcion)
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(@item.imagen))//si no es nulo o vacio
+                    {
+                        <img src="~/images/@item.imagen" class="img-thumbnail"
+                             style="max-height:75px; max-width:75px;" asp-append-version="true" />
+                    }
+                    @* img-thumbail-> sirve para que tome el tamaño de una previsulaizacion ->boostrap *@
+                    @* asp-append-version-> si la img cambia se actualice el nombre y la imagen el el navegador*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.favorito)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.categoria.descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.marca.descripcion)
+                </td>
+                <td>
+                    @*@foreach (var item in ProveedoresProducto)
+                    {
+                             @Html.(ModelItem => item.proveedoresProductos)
+
+                    }*@
+                    <a href="@Url.Action("Index","ProveedoresOK")">ver proveedores</a>
+                    @*<a href="@Url.Action("Proveedores","ProductosOK",new { id=item.Id})">ver proveedor</a>*@
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

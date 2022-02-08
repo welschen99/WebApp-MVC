@@ -1,0 +1,77 @@
+﻿@model IEnumerable<WebAppPRODUCTOS.Models.Producto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.nombres)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.precio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.imagen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.favorito)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.marca)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.nombres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.precio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.descripcion)
+            </td>
+            <td>
+                @if (!string.IsNullOrEmpty(@item.imagen))//si no es nulo o vacio
+                {
+                    <img src="~/images/@item.imagen" class="img-thumbnail"
+                         style="max-height:75px; max-width:75px;" asp-append-version="true" />
+                }
+                @* img-thumbail-> sirve para que tome el tamaño de una previsulaizacion ->boostrap *@
+                @* asp-append-version-> si la img cambia se actualice el nombre y la imagen el el navegador*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.favorito)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.categoria.descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.marca.descripcion)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
